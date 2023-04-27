@@ -1,41 +1,32 @@
-const homme = [15, 12, 24, 12];
-const femme = [22, 28, 19, 6];
+const R = require('ramda');
 
-const expectedValues = ramda.transpose([homme, femme]).map((row) =>
-  row.reduce(ramda.add) / row.length
-);
+function chiSquared(observedValues) {
+  const row1Total = R.sum(observedValues[0]);
+  const row2Total = R.sum(observedValues[1]);
+  const col1Total = R.sum(R.pluck(0, observedValues));
+  const col2Total = R.sum(R.pluck(1, observedValues));
+  const col3Total = R.sum(R.pluck(2, observedValues));
+  const col4Total = R.sum(R.pluck(3, observedValues));
+  const total = row1Total + row2Total;
 
-const observedValues = [...homme, ...femme];
+  const expectedValues = [
+    [(row1Total * col1Total) / total, (row1Total * col2Total) / total, (row1Total * col3Total) / total, (row1Total * col4Total) / total],
+    [(row2Total * col1Total) / total, (row2Total * col2Total) / total, (row2Total * col3Total) / total, (row2Total * col4Total) / total],
+  ];
 
-const degreesOfFreedom = (homme.length - 1) * (2 - 1);
+  const chiSquared = R.pipe(
+    R.zipWith(R.zip),
+    R.map(([observedRow, expectedRow]) => R.sum(R.zipWith((observed, expected) => ((observed - expected) ** 2) / expected, observedRow, expectedRow)))),
+    R.sum
+  )(observedValues, expectedValues);
 
-const chiSquared = observedValues.reduce((accumulator, observed, index) => {
-  const expected = expectedValues[index % homme.length];
-  return accumulator + Math.pow(observed - expected, 2) / expected;
-}, 0);
-
-const chiSquaredCriticalValue = jStat.chisquare.inv(0.95, degreesOfFreedom);
-
-const pValue = jStat.chisquare.sf(chiSquared, degreesOfFreedom);
-
-console.log(`Valeur du test de khi-deux : ${chiSquared.toFixed(2)}`);
-
-if (chiSquared > chiSquaredCriticalValue) {
-  console.log(
-    "La valeur de chi-carré est supérieure à la valeur critique, donc nous avons suffisamment de preuves pour rejeter l'hypothèse nulle selon laquelle il n'y a pas d'association entre les variables."
-  );
-} else {
-  console.log(
-    "La valeur de chi-carré est inférieure à la valeur critique, donc nous n'avons pas suffisamment de preuves pour rejeter l'hypothèse nulle selon laquelle il n'y a pas d'association entre les variables."
-  );
+  return chiSquared;
 }
 
-if (pValue < 0.05) {
-  console.log(
-    "Le p-value est inférieur au niveau de confiance de 5%, donc nous avons suffisamment de preuves pour conclure qu'il y a une association entre les variables."
-  );
-} else {
-  console.log(
-    "Le p-value est supérieur au niveau de confiance de 5%, donc nous n'avons pas suffisamment de preuves pour conclure qu'il y a une association entre les variables."
-  );
-}
+// Exemple d'utilisation :
+const observedValues = [
+  [15, 12, 24, 12],
+  [22, 28, 19, 6],
+];
+const chiSquaredValue = chiSquared(observedValues);
+console.log(`Valeur du test de khi-deux : ${chiSquaredValue}`);
