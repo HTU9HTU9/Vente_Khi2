@@ -1,5 +1,5 @@
-import * as ramda from "ramda";
-import jStat from "jstat";
+const ramda = require("ramda");
+const jStat = require("jstat");
 
 const homme = [15, 12, 24, 12];
 const femme = [22, 28, 19, 6];
