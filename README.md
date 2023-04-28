@@ -4,13 +4,13 @@ Sujet sur la vente avec comme projet de calculer le Khi2.
 Le problème posé : 
 La vente des différents produits est-elle influencée par le sexe des clients ?
 
-Homme : Produit1 = 15
-        Produit2 = 12
-        Produit3 = 24
-        Produit4 = 12
+Homme : Produit1 = 15;
+        Produit2 = 12;
+        Produit3 = 24;
+        Produit4 = 12.
         
         
-Femme : Produit1 = 22
-        Produit2 = 28
-        Produit3 = 19
-        Produit4 = 6
+Femme : Produit1 = 22;
+        Produit2 = 28;
+        Produit3 = 19;
+        Produit4 = 6.
