@@ -16,4 +16,6 @@ Femme : Produit1 = 22;
         Produit4 = 6.
 
 
+
+
 Dans ce programme n'oublier pas d'installer jStat grâce à la commande "npm install jstat"
