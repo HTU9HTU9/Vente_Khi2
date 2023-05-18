@@ -18,4 +18,5 @@ Femme : Produit1 = 22;
 
 Dans ce programme n'oublier pas d'installer jStat grâce à la commande "npm install jstat"
 
-PS: Dans la version amméliorer c'est une code qui est une ammélioration du code qui fonctionnait déjà.
+PS: Les codes se situent dans l'onglet Pull requests.
+Il y a le basic et l'ammélioration qui est le fichier Final.
