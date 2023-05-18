@@ -1,0 +1,44 @@
+import * as ramda from 'ramda';
+import jStat from 'jstat';
+
+const homme = [15, 12, 24, 12];
+const femme = [22, 28, 19, 6];
+
+const expectedValues = ramda.transpose([homme, femme]).map((row) =>
+    row.reduce(ramda.add) / row.length
+);
+
+const observedValues = [...homme, ...femme];
+
+const degreesOfFreedom = (homme.length - 1) * (2 - 1);
+
+const chiSquared = observedValues.reduce((accumulator, observed, index) => {
+    const expected = expectedValues[index % homme.length];
+    return accumulator + Math.pow(observed - expected, 2) / expected;
+}, 0);
+
+const chiSquaredCriticalValue = jStat.chisquare.inv(0.95, degreesOfFreedom);
+
+const pValue = 1 - jStat.chisquare.cdf(chiSquared, degreesOfFreedom);
+
+console.log(`Valeur du test de khi-deux : ${chiSquared.toFixed(2)}`);
+
+if (chiSquared > chiSquaredCriticalValue) {
+    console.log(
+        "La valeur de chi-carré est supérieure à la valeur critique, donc nous avons suffisamment de preuves pour rejeter l'hypothèse nulle selon laquelle il n'y a pas d'association entre les variables."
+    );
+} else {
+    console.log(
+        "La valeur de chi-carré est inférieure à la valeur critique, donc nous n'avons pas suffisamment de preuves pour rejeter l'hypothèse nulle selon laquelle il n'y a pas d'association entre les variables."
+    );
+}
+
+if (pValue < 0.05) {
+    console.log(
+        "Le p-value est inférieur au niveau de confiance de 5%, donc nous avons suffisamment de preuves pour conclure qu'il y a une association entre les variables."
+    );
+} else {
+    console.log(
+        "Le p-value est supérieur au niveau de confiance de 5%, donc nous n'avons pas suffisamment de preuves pour conclure qu'il y a une association entre les variables."
+    );
+}
