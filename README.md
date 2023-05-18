@@ -18,4 +18,4 @@ Femme : Produit1 = 22;
 
 Dans ce programme n'oublier pas d'installer jStat grâce à la commande "npm install jstat"
 
-PS: Dans le main c'est une fonction en cour qui est une ammélioration du code qui fonctionne
+PS: Dans la version amméliorer c'est une code qui est une ammélioration du code qui fonctionnait déjà.
